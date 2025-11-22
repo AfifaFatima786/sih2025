@@ -17,12 +17,12 @@ function App() {
 
         <div className="flex-1 bg-gray-100 min-h-screen p-5">
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+             <Route path="/" element={<Dashboard />} />
             <Route path="/upload" element={<Upload />} />
-            <Route path="/proposals" element={<ProposalTables />} />
-            {/* <Route path="/" element={<AdminDashboard />} />
+            <Route path="/proposals" element={<ProposalTables />} /> 
+             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/proposalsreview" element={<AdminProposalTable />} />
-            <Route path="/proposalreport" element={<EvaluationReport />} /> */}
+            <Route path="/proposalreport/:id" element={<EvaluationReport />} /> 
             
             
           

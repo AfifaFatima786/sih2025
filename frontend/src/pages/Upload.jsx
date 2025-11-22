@@ -8,6 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 function Upload() {
   const [files, setFiles] = useState([]);
+  const [proposalName, setProposalName] = useState("");
+const [institutionName, setInstitutionName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [response, setResponse] = useState([]);
@@ -132,26 +134,58 @@ function Upload() {
         </div>
 
         {/* Upload Box */}
-        <motion.label
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3 }}
-          className="flex flex-col items-center justify-center border-2 border-dashed border-[#53629E] bg-white rounded-2xl p-16 mt-12 cursor-pointer hover:border-[#473472] transition shadow-lg"
-        >
-          <motion.div
-            animate={{ y: [0, -5, 0] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-          >
-            <ArrowUpCircle size={60} className="text-[#53629E] mb-4" />
-          </motion.div>
+        {/* Upload Box - ONLY for file selection */}
+<motion.label
+  initial={{ opacity: 0, scale: 0.95 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ delay: 0.3 }}
+  className="flex flex-col items-center justify-center border-2 border-dashed border-[#53629E] bg-white rounded-2xl p-16 mt-12 cursor-pointer hover:border-[#473472] transition shadow-lg"
+>
+  <motion.div
+    animate={{ y: [0, -5, 0] }}
+    transition={{ repeat: Infinity, duration: 2 }}
+  >
+    <ArrowUpCircle size={60} className="text-[#53629E] mb-4" />
+  </motion.div>
 
-          <p className="font-semibold text-lg text-[#473472]">Choose Proposal Files</p>
-          <p className="text-[#53629E] text-sm mt-1">
-            Drag & drop or click to browse (PDF, DOCX, TXT)
-          </p>
+  <p className="font-semibold text-lg text-[#473472]">Choose Proposal Files</p>
+  <p className="text-[#53629E] text-sm mt-1">
+    Drag & drop or click to browse (PDF, DOCX, TXT)
+  </p>
 
-          <input type="file" className="hidden" multiple onChange={handleFileChange} />
-        </motion.label>
+  {/* SEPARATE FILE INPUT */}
+  <input
+    type="file"
+    className="hidden"
+    multiple
+    onChange={handleFileChange}
+  />
+</motion.label>
+
+
+{/* NEW: Inputs for Proposal Details */}
+<div className="mt-10 bg-white p-6 rounded-xl shadow-md border border-[#53629E]">
+  <label className="block font-semibold text-[#473472]">Proposal Name</label>
+  <input
+    type="text"
+    className="w-full p-2 mt-2 border rounded-lg"
+    placeholder="Enter proposal name"
+    value={proposalName}
+    onChange={(e) => setProposalName(e.target.value)}
+  />
+
+  <label className="block mt-4 font-semibold text-[#473472]">
+    Institution Name
+  </label>
+  <input
+    type="text"
+    className="w-full p-2 mt-2 border rounded-lg"
+    placeholder="Enter institution name"
+    value={institutionName}
+    onChange={(e) => setInstitutionName(e.target.value)}
+  />
+</div>
+
 
         {/* Selected Files */}
         {files.length > 0 && (
@@ -181,7 +215,7 @@ function Upload() {
                   : "bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 cursor-pointer"
               }`}
             >
-              {loading ? "Uploading..." : "Upload to Cloudinary"}
+              {loading ? "Uploading..." : "Upload"}
             </button>
           </motion.div>
         )}

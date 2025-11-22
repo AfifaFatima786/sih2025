@@ -321,131 +321,163 @@
 // };
 
 // export default EvaluationReport;
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ArrowLeft, FileText } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const EvaluationReport = () => {
+  const { id } = useParams(); // Get /report/:id
+  const [report, setReport] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchReport = async () => {
+      try {
+        const res = await fetch(`http://localhost:8080/api/proposal/report/${id}`);
+        if (!res.ok) throw new Error("Failed to load report");
+
+        const data = await res.json();
+        setReport(data);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchReport();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex justify-center items-center text-[#473472] text-xl">
+        Loading Report...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex justify-center items-center text-red-600 text-xl">
+        {error}
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#EEEEEE] text-[#473472] py-10 px-6 font-sans">
-      
+
       {/* Header */}
       <div className="max-w-5xl mx-auto mb-10">
-        {/* <Link to="/proposalsreview">
-  <button className="flex cursor-pointer items-center gap-2 text-[#473472] hover:opacity-70 transition">
-    <ArrowLeft size={20} /> Back
-  </button>
-</Link> */}
-<Link to="/proposalsreview">
-  <button
-    className=" cursor-pointer
-      flex items-center gap-2 text-[#473472]
-      transition-all duration-300
-      hover:scale-[1.15]
-      border hover:shadow-lg
-      hover:border-[#473472]
-      
-      rounded-md
-      px-2 py-1
-    "
-  >
-    <ArrowLeft size={20} /> Back
-  </button>
-</Link>
+        
+        <Link to="/proposalsreview">
+          <button
+            className="cursor-pointer flex items-center gap-2 text-[#473472]
+                       transition-all duration-300 hover:scale-[1.15]
+                       border hover:shadow-lg hover:border-[#473472]
+                       rounded-md px-2 py-1"
+          >
+            <ArrowLeft size={20} /> Back
+          </button>
+        </Link>
 
         <h1 className="text-4xl font-bold mt-4">Project Evaluation Report</h1>
         <p className="text-gray-600 mt-1">
-          Detailed automatic analysis powered by the Review Engine.
+          Automatically generated report for: 
+          <span className="font-semibold text-[#473472]"> {report.proposalName}</span>
         </p>
       </div>
 
-      {/* Report Card Container */}
+      {/* Report Container */}
       <div className="max-w-5xl mx-auto space-y-8">
 
         {/* Project Overview */}
         <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-xl">
-          <h2 className="text-2xl font-bold border-b border-gray-200 pb-2 mb-4 text-[#473472]">
+          <h2 className="text-2xl font-bold border-b pb-2 mb-4 text-[#473472]">
             Project Overview
           </h2>
 
           <p className="text-gray-600 leading-relaxed">
-            This system analyzes proposal documents and determines their feasibility,
-            technical depth, and innovation level using a custom scoring engine.
+            Institution: <span className="font-semibold">{report.institutionName}</span>
+          </p>
+
+          <p className="text-gray-600 mt-2">
+            Status:  
+            <span className="font-semibold text-[#53629E]"> {report.status}</span>
+          </p>
+
+          <p className="text-gray-600 mt-2">
+            Submitted On:{" "}
+            <span className="font-semibold">
+              {new Date(report.creationDate).toLocaleString()}
+            </span>
           </p>
         </div>
 
-        {/* Final Evaluation Result */}
+        {/* Final Evaluation */}
         <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-xl">
-          <h2 className="text-2xl font-bold border-b border-gray-200 pb-2 mb-4 text-[#473472]">
+          <h2 className="text-2xl font-bold border-b pb-2 mb-4 text-[#473472]">
             Final Evaluation Result
           </h2>
 
           <div className="flex items-end gap-6">
-            <div className="text-6xl font-extrabold text-[#36934D]">86</div>
+            <div className="text-6xl font-extrabold text-[#36934D]">
+              {report.overallScore}
+            </div>
             <p className="text-gray-700">
-              The project is rated{" "}
-              <span className="text-[#473472] font-semibold">Strongly Viable</span> for implementation.
+              Overall Rating: 
+              <span className="text-[#473472] font-semibold">
+                {" "}
+                {report.overallScore >= 25
+                  ? "Excellent"
+                  : report.overallScore >= 20
+                  ? "Strongly Viable"
+                  : "Needs Improvement"}
+              </span>
             </p>
           </div>
         </div>
 
         {/* Metric Breakdown */}
         <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-xl">
-          <h2 className="text-2xl font-bold text-[#473472] mb-4 border-b border-gray-200 pb-2">
+          <h2 className="text-2xl font-bold text-[#473472] mb-4 border-b pb-2">
             Metric Breakdown
           </h2>
 
-          {/* Operational Efficiency */}
-          <div className="pb-3 border-b border-gray-200">
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-gray-600">Operational Efficiency (OE)</span>
-              <span className="text-xl font-bold text-[#36934D]">92%</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div className="bg-[#36934D] h-2 rounded-full" style={{ width: "92%" }}></div>
-            </div>
-          </div>
+          {/* Novel Score */}
+          <MetricRow
+            title="Novelty Score"
+            value={report.novelScore}
+            color="#53629E"
+          />
 
-          {/* Technical Novelty */}
-          <div className="py-3 border-b border-gray-200">
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-gray-600">Technical Novelty Index (TNI)</span>
-              <span className="text-xl font-bold text-[#53629E]">78%</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div className="bg-[#53629E] h-2 rounded-full" style={{ width: "78%" }}></div>
-            </div>
-          </div>
+          {/* Budget Score */}
+          <MetricRow
+            title="Budget Score"
+            value={report.budgetScore}
+            color="#36934D"
+          />
 
-          {/* TRL */}
-          <div className="pt-3">
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-gray-600">Technology Readiness Level (TRL)</span>
-              <span className="text-xl font-bold text-[#A67E00]">5/9</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div
-                className="bg-gradient-to-r from-[#A67E00] to-[#D97706] h-2 rounded-full"
-                style={{ width: "55%" }}
-              ></div>
-            </div>
-            <p className="text-xs text-gray-500 mt-1">
-              Requires system integration validation (TRL 7+ recommended).
-            </p>
-          </div>
+          {/* Guidelines Score */}
+          <MetricRow
+            title="Guideline Score"
+            value={report.guidelineScore}
+            color="#A67E00"
+          />
+
         </div>
 
         {/* Recommendations */}
         <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-xl">
-          <h2 className="text-2xl font-bold border-b border-gray-200 pb-2 mb-4 text-[#473472]">
-            Recommendations
+          <h2 className="text-2xl font-bold border-b pb-2 mb-4 text-[#473472]">
+            Detailed Reviewer Notes
           </h2>
 
-          <ul className="list-disc pl-5 text-gray-700 space-y-2">
-            <li>Improve validation testing to raise TRL from 5 to 7.</li>
-            <li>Strengthen novelty features with deeper ML integration.</li>
-            <li>Refine operational model for broader scalability.</li>
+          <ul className="list-disc pl-5 text-gray-700 space-y-3">
+            <li><strong>Novelty:</strong> {report.novelReport}</li>
+            <li><strong>Budget:</strong> {report.budgetReport}</li>
+            <li><strong>Guidelines:</strong> {report.guidelineReport}</li>
           </ul>
         </div>
 
@@ -474,6 +506,31 @@ const EvaluationReport = () => {
           </div>
         </div>
 
+      </div>
+    </div>
+  );
+};
+
+/* ------------------------------------------- */
+/* Metric Component (Re-usable Clean UI)       */
+/* ------------------------------------------- */
+const MetricRow = ({ title, value, color }) => {
+  const pct = Math.min((value / 30) * 100, 100); // convert to percentage
+
+  return (
+    <div className="pb-4 border-b border-gray-200 last:border-b-0">
+      <div className="flex items-center justify-between mb-1">
+        <span className="text-gray-600">{title}</span>
+        <span className="text-xl font-bold" style={{ color }}>
+          {value}
+        </span>
+      </div>
+
+      <div className="w-full bg-gray-200 rounded-full h-2">
+        <div
+          className="h-2 rounded-full"
+          style={{ width: `${pct}%`, backgroundColor: color }}
+        ></div>
       </div>
     </div>
   );
