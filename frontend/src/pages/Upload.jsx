@@ -36,6 +36,31 @@ const [institutionName, setInstitutionName] = useState("");
     };
   }, []);
 
+
+  //upload data to backend
+  const sendProposalToBackend = async (proposalName, institutionName, fileUrl) => {
+  try {
+    const res = await fetch("http://localhost:8080/api/proposal/evaluation", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        proposalName,
+        institutionName,
+        filePath: fileUrl, // cloudinary URL
+      }),
+    });
+
+    if (!res.ok) throw new Error("Backend API failed");
+    return await res.json();
+  } catch (err) {
+    toast.error("Error sending data to backend");
+    console.error(err);
+  }
+};
+
+
   // Upload a single file to Cloudinary
   const uploadToCloudinary = async (file) => {
     const formData = new FormData();
@@ -69,36 +94,85 @@ const [institutionName, setInstitutionName] = useState("");
   };
 
   // Handle upload of all selected files
+  // const handleUpload = async () => {
+  //   if (files.length === 0) {
+  //     setError("Please select at least one file to upload");
+  //     return;
+  //   }
+
+  //   setLoading(true);
+  //   setError(null);
+  //   setResponse([]);
+
+  //   try {
+  //     const uploadResults = [];
+  //     for (const file of files) {
+  //       const data = await uploadToCloudinary(file);
+  //       uploadResults.push({
+  //         fileName: file.name,
+  //         fileSize: file.size,
+  //         fileUrl: data.secure_url,
+  //         publicId: data.public_id,
+  //         uploadedAt: new Date().toISOString(),
+  //       });
+  //     }
+  //     setResponse(uploadResults);
+  //     setFiles([]);
+  //   } catch (err) {
+  //     setError(err.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleUpload = async () => {
-    if (files.length === 0) {
-      setError("Please select at least one file to upload");
-      return;
-    }
+  if (files.length === 0) {
+    setError("Please select a file to upload");
+    return;
+  }
 
-    setLoading(true);
-    setError(null);
-    setResponse([]);
+  if (!proposalName || !institutionName) {
+    toast.error("Please fill both Proposal Name and Institution Name");
+    return;
+  }
 
-    try {
-      const uploadResults = [];
-      for (const file of files) {
-        const data = await uploadToCloudinary(file);
-        uploadResults.push({
-          fileName: file.name,
-          fileSize: file.size,
-          fileUrl: data.secure_url,
-          publicId: data.public_id,
-          uploadedAt: new Date().toISOString(),
-        });
-      }
-      setResponse(uploadResults);
-      setFiles([]);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  setLoading(true);
+  setError(null);
+  setResponse([]);
+
+  try {
+    const file = files[0]; // user uploaded only ONE file
+
+    // 1️⃣ Upload file to Cloudinary
+    const uploaded = await uploadToCloudinary(file);
+    const cloudUrl = uploaded.secure_url;
+
+    // 2️⃣ Send data to backend API
+    const backendResponse = await sendProposalToBackend(
+      proposalName,
+      institutionName,
+      cloudUrl
+    );
+
+    toast.success("Proposal submitted successfully!");
+
+    // Show success box
+    setResponse([
+      {
+        fileName: file.name,
+        fileUrl: cloudUrl,
+        fileSize: file.size,
+      },
+    ]);
+
+    setFiles([]);
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-[#EEEEEE] text-[#473472] relative overflow-hidden">

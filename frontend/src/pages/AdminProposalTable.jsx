@@ -249,7 +249,7 @@ import {
 const AdminProposalTable = () => {
   const [proposals, setProposals] = useState([]);
 
-  //️⃣ CALL BACKEND API
+  //️ CALL BACKEND API
   useEffect(() => {
     fetch("http://localhost:8080/api/proposal/getAll")
       .then((res) => res.json())
