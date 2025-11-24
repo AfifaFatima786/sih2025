@@ -334,7 +334,7 @@ const EvaluationReport = () => {
   useEffect(() => {
     const fetchReport = async () => {
       try {
-        const res = await fetch(`http://localhost:8080/api/proposal/report/${id}`);
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/proposal/report/${id}`);
         if (!res.ok) throw new Error("Failed to load report");
 
         const data = await res.json();

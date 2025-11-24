@@ -1,50 +1,109 @@
-
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Sidebar from "./components/Sidebar";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; 
+
+import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import Upload from "./pages/upload";
 import ProposalTables from "./pages/ProposalTables";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminProposalTable from "./pages/AdminProposalTable";
 import EvaluationReport from "./pages/EvaluationReport";
+import UserLogin from "./pages/UserLogin";
+import AdminLogin from "./pages/AdminLogin";
+import UserRegisteration from "./pages/UserRegistration";
+import AdminRegisteration from "./pages/AdminRegistration";
+
+// Context Providers
+import UserContextProvider from "./context/UserContext";
+import AdminContextProvider from "./context/AdminContext";
+
+// Protected Route Components
+import UserProtectedRoute from "./components/UserProtectedRoute";
+import AdminProtectedRoute from "./components/AdminProtectedRoute";
+import Logout from "./pages/Logout";
 
 function App() {
   return (
-    <Router>
-      <div className="flex">
+    <UserContextProvider>
+      <AdminContextProvider>
+        <Router>
+          <div className="flex">
+            <div className="flex-1 bg-gray-100 min-h-screen p-5">
+              <Routes>
 
-        <div className="flex-1 bg-gray-100 min-h-screen p-5">
-          <Routes>
-             <Route path="/" element={<Dashboard />} />
-            <Route path="/upload" element={<Upload />} />
-            <Route path="/proposals" element={<ProposalTables />} /> 
-             <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/proposalsreview" element={<AdminProposalTable />} />
-            <Route path="/proposalreport/:id" element={<EvaluationReport />} /> 
-            
-            
-          
+                {/* User Protected Routes */}
+                <Route
+                  path="/"
+                  element={
+                    <UserProtectedRoute>
+                      <Dashboard />
+                    </UserProtectedRoute>
+                  }
+                />
 
-            
-          </Routes>
-        </div>
+                <Route
+                  path="/upload"
+                  element={
+                    <UserProtectedRoute>
+                      <Upload />
+                    </UserProtectedRoute>
+                  }
+                />
 
-      </div>
+                <Route
+                  path="/proposals"
+                  element={
+                    <UserProtectedRoute>
+                      <ProposalTables />
+                    </UserProtectedRoute>
+                  }
+                />
 
-       <ToastContainer 
-        position="top-right"
-        autoClose={3000} 
-        hideProgressBar={false} 
-        newestOnTop={false} 
-        closeOnClick 
-        rtl={false} 
-        pauseOnFocusLoss 
-        draggable 
-        pauseOnHover
-      />
-    </Router>
+                {/* Admin Protected Routes */}
+                <Route
+                  path="/admin"
+                  element={
+                    <AdminProtectedRoute>
+                      <AdminDashboard />
+                    </AdminProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/proposalsreview"
+                  element={
+                    <AdminProtectedRoute>
+                      <AdminProposalTable />
+                    </AdminProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/proposalreport/:id"
+                  element={
+                    <AdminProtectedRoute>
+                      <EvaluationReport />
+                    </AdminProtectedRoute>
+                  }
+                />
+
+                <Route path="/logout" element={<Logout/>}/>
+
+                {/* Authentication Routes */}
+                <Route path="/userlogin" element={<UserLogin />} />
+                <Route path="/adminlogin" element={<AdminLogin />} />
+                <Route path="/userregister" element={<UserRegisteration />} />
+                <Route path="/adminregister" element={<AdminRegisteration />} />
+              
+              </Routes>
+            </div>
+          </div>
+
+          <ToastContainer autoClose={2500} />
+        </Router>
+      </AdminContextProvider>
+    </UserContextProvider>
   );
 }
 

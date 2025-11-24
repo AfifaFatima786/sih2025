@@ -251,7 +251,7 @@ const AdminProposalTable = () => {
 
   //️ CALL BACKEND API
   useEffect(() => {
-    fetch("http://localhost:8080/api/proposal/getAll")
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/proposal/getAll`)
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched proposals:", data);

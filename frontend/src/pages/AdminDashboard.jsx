@@ -90,10 +90,21 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Sparkles, UserCog } from "lucide-react";
+import { ArrowUpCircle, FileText, ArrowUpRight } from "lucide-react";
 
 const AdminWelcome = () => {
   return (
     <div className="min-h-screen bg-[#EEEEEE] text-[#473472] font-sans overflow-hidden">
+
+       <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        to='/logout'
+        className="absolute top-6 right-6 flex items-center gap-2 px-6 py-3 bg-[#53629E] text-white rounded-2xl shadow-lg hover:shadow-xl transition-all cursor-pointer font-semibold"
+      >
+        Logout
+        <ArrowUpRight size={18} />
+      </motion.button>
 
       {/* Faint grid */}
       <div className="absolute inset-0 opacity-10">
@@ -106,6 +117,8 @@ const AdminWelcome = () => {
           }}
         ></div>
       </div>
+
+
 
       {/* Center Container */}
       <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 min-h-screen">

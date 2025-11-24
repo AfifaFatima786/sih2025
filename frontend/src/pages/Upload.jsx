@@ -40,7 +40,7 @@ const [institutionName, setInstitutionName] = useState("");
   //upload data to backend
   const sendProposalToBackend = async (proposalName, institutionName, fileUrl) => {
   try {
-    const res = await fetch("http://localhost:8080/api/proposal/evaluation", {
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/proposal/evaluation`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
