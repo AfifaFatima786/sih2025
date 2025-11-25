@@ -431,6 +431,7 @@
 // };
 
 // export default AdminProposalTable;
+
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -468,6 +469,20 @@ const AdminProposalTable = () => {
   const CARD_BG = "bg-white shadow-xl border border-gray-100";
   const PRIMARY_GRADIENT = "from-[#53629E] to-[#473472]";
   const VIEW_PDF_COLOR = "text-[#473472]";
+
+  const getButtonText = (status) => {
+  switch (status) {
+    case "SUCCESS":
+      return "View";
+    case "PENDING":
+      return "Wait.. Evaluating";
+    case "FAILED":
+      return "Re-evaluate";
+    default:
+      return "Evaluate";
+  }
+};
+
 
   // --- STATUS ICON LOGIC ---
   const getStatusIcon = (status) => {
@@ -558,11 +573,20 @@ const AdminProposalTable = () => {
                 View File
               </a>
 
-              <Link to={`/proposalreport/${p.proposalId}`} className="flex-1">
+              {/* <Link to={`/proposalreport/${p.proposalId}`} className="flex-1">
                 <button className={`w-full rounded-lg px-4 py-2.5 bg-gradient-to-r ${PRIMARY_GRADIENT} text-white shadow-md`}>
                   Evaluate
                 </button>
-              </Link>
+              </Link> */}
+              <Link to={`/proposalreport/${p.proposalId}`} className="flex-1">
+  <button
+    className={`w-full rounded-lg px-4 py-2.5 bg-gradient-to-r ${PRIMARY_GRADIENT} text-white shadow-md`}
+    disabled={p.status === "PENDING"} // optional: disable button while pending
+  >
+    {getButtonText(p.status)}
+  </button>
+</Link>
+
             </div>
           </div>
         ))}
@@ -618,11 +642,20 @@ const AdminProposalTable = () => {
                 </td>
 
                 <td className="py-4 px-4 text-right">
-                  <Link to={`/proposalreport/${p.proposalId}`}>
+                  {/* <Link to={`/proposalreport/${p.proposalId}`}>
                     <button className={`rounded-lg px-5 py-2.5 bg-gradient-to-r ${PRIMARY_GRADIENT} text-white font-semibold shadow-md`}>
                       Evaluate
                     </button>
-                  </Link>
+                  </Link> */}
+                  <Link to={`/proposalreport/${p.proposalId}`}>
+  <button
+    className={`rounded-lg px-5 py-2.5 bg-gradient-to-r ${PRIMARY_GRADIENT} text-white font-semibold shadow-md`}
+    disabled={p.status === "PENDING"} // optional
+  >
+    {getButtonText(p.status)}
+  </button>
+</Link>
+
                 </td>
               </tr>
             ))}
