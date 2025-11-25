@@ -30,11 +30,14 @@ const UserContextProvider = ({ children }) => {
     const checkUserSession = async () => {
       try {
         // IMPORTANT: withCredentials: true sends the HttpOnly cookie to backend
-        const response = await axios.get("http://localhost:8080/api/auth/profile", {
-          withCredentials: true,
-        });
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/auth/profile`, {
+        withCredentials: true,
+});
+
 
         if (response.status === 200) {
+          console.log("Response forom backend line 39")
+          console.log(response)
           setUser(response.data); // Set user data from backend response
         }
       } catch (error) {
