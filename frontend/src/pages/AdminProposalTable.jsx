@@ -251,13 +251,20 @@ const AdminProposalTable = () => {
 
   //️ CALL BACKEND API
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_BASE_URL}/api/proposal/getAll`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Fetched proposals:", data);
-        setProposals(data); // Store API data
-      })
-      .catch((err) => console.error("Error fetching proposals:", err));
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/proposal/getAll`, {
+  method: "GET",
+  credentials: "include"   
+})
+  .then((res) => {
+    if (!res.ok) throw new Error("Network error");
+    return res.json();
+  })
+  .then((data) => {
+    console.log("Fetched proposals:", data);
+    setProposals(data);
+  })
+  .catch((err) => console.error("Error fetching proposals:", err));
+
   }, []);
 
   // --- COLOR PALETTE ---

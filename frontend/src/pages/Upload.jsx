@@ -40,17 +40,30 @@ const [institutionName, setInstitutionName] = useState("");
   //upload data to backend
   const sendProposalToBackend = async (proposalName, institutionName, fileUrl) => {
   try {
+    // const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/proposal/evaluation`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     proposalName,
+    //     institutionName,
+    //     filePath: fileUrl, // cloudinary URL
+    //   }),
+    // });
     const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/proposal/evaluation`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        proposalName,
-        institutionName,
-        filePath: fileUrl, // cloudinary URL
-      }),
-    });
+  method: "POST",
+  credentials: "include",   
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    proposalName,
+    institutionName,
+    filePath: fileUrl,
+  }),
+});
+
 
     if (!res.ok) throw new Error("Backend API failed");
     return await res.json();
