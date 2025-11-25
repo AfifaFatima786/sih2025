@@ -244,57 +244,77 @@ const AdminProposalTable = () => {
   const VIEW_PDF_COLOR = "text-[#473472]";
 
   // STATUS ICONS
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case "PENDING":
-        return <Clock className="w-4 h-4 text-[#473472]" />;
-      case "REVIEW":
-        return <AlertCircle className="w-4 h-4 text-[#A67E00]" />;
-      case "APPROVED":
-        return <CheckCircle className="w-4 h-4 text-[#36934D]" />;
-      case "FAILED":
-        return <AlertCircle className="w-4 h-4 text-red-500" />;
-      default:
-        return <Clock className="w-4 h-4 text-gray-600" />;
-    }
-  };
+  // const getStatusIcon = (status) => {
+  //   switch (status) {
+  //     case "PENDING":
+  //       return <Clock className="w-4 h-4 text-[#473472]" />;
+  //     case "REVIEW":
+  //       return <AlertCircle className="w-4 h-4 text-[#A67E00]" />;
+  //     case "APPROVED":
+  //       return <CheckCircle className="w-4 h-4 text-[#36934D]" />;
+  //     case "FAILED":
+  //       return <AlertCircle className="w-4 h-4 text-red-500" />;
+  //     default:
+  //       return <Clock className="w-4 h-4 text-gray-600" />;
+  //   }
+  // };
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "PENDING":
-        return `bg-[${LIGHTEST_BG}] border-[#87BAC3] text-[#473472]`;
-      case "REVIEW":
-        return "bg-[#FFF9E5] border-[#FFE9A3] text-[#A67E00]";
-      case "APPROVED":
-        return "bg-[#EAF7EE] border-[#C8EAD0] text-[#36934D]";
-      case "FAILED":
-        return "bg-[#FEECEC] border-[#F5A3A3] text-red-600";
-      default:
-        return "bg-[#E5E8EB] border-[#D0D4DA] text-[#473472]";
-    }
-  };
+    const getStatusIcon = (status) => {
+  switch (status) {
+    case "pending":
+      return <Clock className="w-4 h-4 text-[#473472]" />;
 
-  // ⭐ EVALUATE BUTTON STYLE BASED ON STATUS
+    case "failed":
+      return <AlertCircle className="w-4 h-4 text-red-500" />;
+
+    case "success":
+      return <CheckCircle className="w-4 h-4 text-[#36934D]" />;
+
+    default:
+      return <Clock className="w-4 h-4 text-gray-600" />;
+  }
+};
+
+
+  
+const getStatusColor = (status) => {
+  switch (status) {
+    case "pending":
+      return "bg-[#FFF9E5] border-[#FFE9A3] text-[#A67E00]";
+
+    case "failed":
+      return "bg-[#FEECEC] border-[#F5A3A3] text-red-600";
+
+    case "success":
+      return "bg-[#EAF7EE] border-[#C8EAD0] text-[#36934D]";
+
+    default:
+      return "bg-[#E5E8EB] border-[#D0D4DA] text-[#473472]";
+  }
+};
+
+
+  //  EVALUATE BUTTON STYLE BASED ON STATUS
   const getActionButton = (status, proposalId) => {
-    if (status === "APPROVED") {
-      return (
-        <Link to={`/proposalreport/${proposalId}`}>
-          <button className="rounded-lg px-5 py-2.5 border-2 border-[#473472] text-[#473472] font-semibold bg-white hover:bg-[#f7f7f7] transition">
-            View
-          </button>
-        </Link>
-      );
-    }
+    if (status === "success") {
+    return (
+      <Link to={`/proposalreport/${proposalId}`}>
+        <button className="rounded-lg px-5 py-2.5 border-2 border-[#473472] text-[#473472] font-semibold bg-white hover:bg-[#f7f7f7] transition">
+          View
+        </button>
+      </Link>
+    );
+  }
 
-    if (status === "FAILED") {
-      return (
-        <Link to={`/proposalreport/${proposalId}`}>
-          <button className="rounded-lg px-5 py-2.5 bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold shadow-md">
-            Re-Evaluate
-          </button>
-        </Link>
-      );
-    }
+  if (status === "failed") {
+    return (
+      <Link to={`/proposalreport/${proposalId}`}>
+        <button className="rounded-lg px-5 py-2.5 bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold shadow-md">
+          Re-Evaluate
+        </button>
+      </Link>
+    );
+  }
 
     // PENDING or REVIEW
     return (
