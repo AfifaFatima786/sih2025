@@ -261,13 +261,13 @@ const AdminProposalTable = () => {
 
     const getStatusIcon = (status) => {
   switch (status) {
-    case "pending":
+    case "PENDING":
       return <Clock className="w-4 h-4 text-[#473472]" />;
 
-    case "failed":
+    case "FAILED":
       return <AlertCircle className="w-4 h-4 text-red-500" />;
 
-    case "success":
+    case "SUCCESS":
       return <CheckCircle className="w-4 h-4 text-[#36934D]" />;
 
     default:
@@ -279,13 +279,13 @@ const AdminProposalTable = () => {
   
 const getStatusColor = (status) => {
   switch (status) {
-    case "pending":
+    case "PENDING":
       return "bg-[#FFF9E5] border-[#FFE9A3] text-[#A67E00]";
 
-    case "failed":
+    case "FAILED":
       return "bg-[#FEECEC] border-[#F5A3A3] text-red-600";
 
-    case "success":
+    case "SUCCESS":
       return "bg-[#EAF7EE] border-[#C8EAD0] text-[#36934D]";
 
     default:
@@ -296,7 +296,7 @@ const getStatusColor = (status) => {
 
   //  EVALUATE BUTTON STYLE BASED ON STATUS
   const getActionButton = (status, proposalId) => {
-    if (status === "success") {
+    if (status === "SUCCESS") {
     return (
       <Link to={`/proposalreport/${proposalId}`}>
         <button className="rounded-lg px-5 py-2.5 border-2 border-[#473472] text-[#473472] font-semibold bg-white hover:bg-[#f7f7f7] transition">
@@ -306,7 +306,7 @@ const getStatusColor = (status) => {
     );
   }
 
-  if (status === "failed") {
+  if (status === "FAILED") {
     return (
       <Link to={`/proposalreport/${proposalId}`}>
         <button className="rounded-lg px-5 py-2.5 bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold shadow-md">
