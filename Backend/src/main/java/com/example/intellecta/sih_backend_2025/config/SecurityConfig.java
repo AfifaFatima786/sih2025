@@ -59,7 +59,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .authorizeHttpRequests(auth -> auth
+                .authorizeHttpR equests(auth -> auth
                         .requestMatchers(
                                 "/api/auth/login",
                                 "/api/auth/register-user",
