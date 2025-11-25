@@ -112,25 +112,26 @@ const Dashboard = () => {
     };
   }, []);
 
-  const handleLogout = () => {
-    // Clear any auth/user data here if needed
-    localStorage.removeItem("user"); // example
-    navigate("/login"); // redirect to login pagecd fron
-  };
+  // const handleLogout = () => {
+  //   // Clear any auth/user data here if needed
+  //   localStorage.removeItem("user"); // example
+  //   navigate("/login"); // redirect to login pagecd fron
+  // };
 
   return (
     <div className="min-h-screen bg-[#EEEEEE] text-[#473472] font-sans overflow-hidden flex items-center justify-center relative">
 
       {/* Logout Button */}
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        to='/logout'
-        className="absolute top-6 right-6 flex items-center gap-2 px-6 py-3 bg-[#53629E] text-white rounded-2xl shadow-lg hover:shadow-xl transition-all cursor-pointer font-semibold"
-      >
-        Logout
-        <ArrowUpRight size={18} />
-      </motion.button>
+      <Link to="/logout">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="absolute top-6 right-6 flex items-center gap-2 px-6 py-3 bg-[#53629E] text-white rounded-2xl shadow-lg hover:shadow-xl transition-all cursor-pointer font-semibold"
+        >
+          Logout
+          <ArrowUpRight size={18} />
+        </motion.button>
+      </Link>
 
       {/* Header Content */}
       <motion.div

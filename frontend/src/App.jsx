@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
-import Upload from "./pages/upload";
+import Upload from "./pages/Upload";
 import ProposalTables from "./pages/ProposalTables";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminProposalTable from "./pages/AdminProposalTable";

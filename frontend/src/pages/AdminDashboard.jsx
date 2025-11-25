@@ -96,7 +96,7 @@ const AdminWelcome = () => {
   return (
     <div className="min-h-screen bg-[#EEEEEE] text-[#473472] font-sans overflow-hidden">
 
-       <motion.button
+       {/* <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         to='/logout'
@@ -104,7 +104,18 @@ const AdminWelcome = () => {
       >
         Logout
         <ArrowUpRight size={18} />
-      </motion.button>
+      </motion.button> */}
+      <Link to="/logout">
+  <motion.button
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+    className="absolute top-6 right-6 flex items-center gap-2 px-6 py-3 bg-[#53629E] text-white rounded-2xl shadow-lg hover:shadow-xl transition-all cursor-pointer font-semibold"
+  >
+    Logout
+    <ArrowUpRight size={18} />
+  </motion.button>
+</Link>
+
 
       {/* Faint grid */}
       <div className="absolute inset-0 opacity-10">
