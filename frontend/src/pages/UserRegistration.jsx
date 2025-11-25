@@ -34,9 +34,11 @@ export default function UserRegisteration() {
     ...(form.institution && { institution: form.institution }) // optional
   };
 
-  axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/register-user`, payload)
+  axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/register-user`, payload,{ withCredentials: true })
     .then((res) => {
-      setUser(res.data);
+      // setUser(res.data);
+      // setUser({ email });
+      setUser({ email: form.email });
       toast.success("User registered successfully!");
       navigate("/"); // redirect to user login
     })

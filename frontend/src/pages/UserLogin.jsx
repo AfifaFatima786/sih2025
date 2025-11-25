@@ -18,7 +18,10 @@ const UserLogin = () => {
 
     axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/login`, { email, password }, { withCredentials: true })
       .then((res) => {
-        setUser(res.data); // store logged-in user in context
+        // setUser(res.data); // store logged-in user in context
+        setUser({ email });  // store the email manually
+
+        
         toast.success("User logged in successfully!");
         navigate("/"); // redirect to dashboard
       })

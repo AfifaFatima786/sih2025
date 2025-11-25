@@ -35,7 +35,8 @@ export default function AdminRegister() {
       
       // If backend returns admin info + token, set context
       if (res.data) {
-        setAdmin(res.data);
+        // setAdmin(res.data);
+        setAdmin({ email: form.email });
         toast.success("Admin registered and logged in!");
         navigate("/admin");
       } else {

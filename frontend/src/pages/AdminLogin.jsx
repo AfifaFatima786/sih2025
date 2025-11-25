@@ -29,7 +29,8 @@ const AdminLogin = () => {
         console.log(res.data);
 
         // set admin in context
-        setAdmin(res.data);
+        // setAdmin(res.data);
+         setAdmin({ email }); 
 
         toast.success("Admin successfully logged in!");
         navigate("/admin"); // redirect to admin dashboard
