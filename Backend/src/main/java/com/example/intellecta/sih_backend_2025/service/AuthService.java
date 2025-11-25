@@ -195,6 +195,8 @@ public class AuthService {
         jwtService.clearCookie(response,"access_token");
         jwtService.clearCookie(response,"refresh_token");
 
+        System.out.println("Logout successfull");
+
         return ResponseEntity.ok(new AuthResponse(
                 200,
                 "Logout successful",
