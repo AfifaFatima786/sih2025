@@ -96,16 +96,8 @@ const AdminWelcome = () => {
   return (
     <div className="min-h-screen bg-[#EEEEEE] text-[#473472] font-sans overflow-hidden">
 
-       {/* <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        to='/logout'
-        className="absolute top-6 right-6 flex items-center gap-2 px-6 py-3 bg-[#53629E] text-white rounded-2xl shadow-lg hover:shadow-xl transition-all cursor-pointer font-semibold"
-      >
-        Logout
-        <ArrowUpRight size={18} />
-      </motion.button> */}
-      <Link to="/logout">
+      
+      {/* <Link to="/logout">
   <motion.button
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
@@ -114,7 +106,25 @@ const AdminWelcome = () => {
     Logout
     <ArrowUpRight size={18} />
   </motion.button>
-</Link>
+</Link> */}
+{/* DEBUG LOGOUT BUTTON */}
+<div
+  onClick={() => {
+    console.log(" Logout button clicked — navigating to /logout");
+  }}
+>
+  <Link to="/logout">
+    <motion.button
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      className="absolute top-6 right-6 flex items-center gap-2 px-6 py-3 bg-[#53629E] text-white rounded-2xl shadow-lg hover:shadow-xl transition-all cursor-pointer font-semibold"
+    >
+      Logout
+      <ArrowUpRight size={18} />
+    </motion.button>
+  </Link>
+</div>
+
 
 
       {/* Faint grid */}
