@@ -8,7 +8,7 @@ const Logout = () => {
   useEffect(() => {
     const logoutUser = async () => {
       try {
-        const res = await axios.get(
+        const res = await axios.post(
           `${import.meta.env.VITE_BASE_URL}/api/auth/logout`,
           { withCredentials: true }
         );
