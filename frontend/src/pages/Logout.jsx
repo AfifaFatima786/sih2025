@@ -14,6 +14,8 @@ const Logout = () => {
         );
 
         if (res.status === 200) {
+          console.log(res.status)
+          console.log(res)
           navigate("/userlogin");
         }
       } catch (err) {
