@@ -554,6 +554,8 @@
 import React, { useEffect, useState } from "react";
 import { ArrowLeft, FileText, MessageCircle, X } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
+import { motion } from "framer-motion";
+
 
 const EvaluationReport = () => {
   const { id } = useParams();
@@ -566,23 +568,30 @@ const EvaluationReport = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
-  const sendMessage = async () => {
-    if (!input.trim()) return;
+  const [typing, setTyping] = useState(false);
 
-    // Add user message to UI
-    const newMsg = { sender: "user", text: input };
-    setMessages((prev) => [...prev, newMsg]);
+const sendMessage = async () => {
+  if (!input.trim()) return;
 
-    const question = input;
-    setInput("");
+  const newMsg = { sender: "user", text: input };
+  setMessages((prev) => [...prev, newMsg]);
 
-    // 🚀 TODO: Replace with your backend API call
-    const botReply = "This is a placeholder chatbot response. Connect API.";
+  const question = input;
+  setInput("");
+  setTyping(true);
 
-    setTimeout(() => {
-      setMessages((prev) => [...prev, { sender: "bot", text: botReply }]);
-    }, 600);
-  };
+  // TODO: Replace with real API
+  setTimeout(() => {
+    const botReply = {
+      sender: "bot",
+      text: `AI response for: "${question}"`,
+    };
+
+    setMessages((prev) => [...prev, botReply]);
+    setTyping(false);
+  }, 1200); // smooth typing delay
+};
+
 
 
   useEffect(() => {
@@ -750,63 +759,87 @@ const EvaluationReport = () => {
       {/* ──────────────────────── */}
       {/* Floating Chatbot Button */}
       {/* ──────────────────────── */}
-      <button
-        onClick={() => setChatOpen(true)}
-        className="fixed bottom-6 right-6 bg-[#473472] text-white p-4 rounded-full shadow-lg hover:scale-110 transition-all"
-      >
-        <MessageCircle size={26} />
-      </button>
+
 
       {/* ──────────────────────── */}
       {/* Chat Panel (Slide-in)   */}
       {/* ──────────────────────── */}
-      <div
-        className={`fixed top-0 right-0 h-full w-80 bg-white shadow-2xl border-l 
-        transform transition-transform duration-300
-        ${chatOpen ? "translate-x-0" : "translate-x-full"}`}
-      >
-        {/* Chat Header */}
-        <div className="flex items-center justify-between bg-[#473472] text-white p-4">
-          <h2 className="text-lg font-semibold">AI Proposal Assistant</h2>
-          <X
-            size={22}
-            className="cursor-pointer hover:scale-110"
-            onClick={() => setChatOpen(false)}
-          />
-        </div>
+      {/* Chatbot Modal */}
 
-        {/* Messages */}
-        <div className="p-4 overflow-y-auto h-[75%] space-y-3">
-          {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`p-3 rounded-lg max-w-[90%] ${
-                msg.sender === "user"
-                  ? "bg-[#473472] text-white ml-auto"
-                  : "bg-gray-200 text-gray-800"
-              }`}
-            >
-              {msg.text}
-            </div>
-          ))}
-        </div>
+      {/* Floating Chatbot Button */}
+<button
+  onClick={() => setChatOpen(true)}
+  className="fixed bottom-6 right-6 bg-[#473472] text-white p-4 rounded-full shadow-lg hover:scale-110 transition-all"
+>
+  <MessageCircle size={26} />
+</button>
 
-        {/* Input Box */}
-        <div className="p-3 border-t flex items-center gap-2">
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask something..."
-            className="flex-1 border rounded-md px-3 py-2 outline-none"
-          />
-          <button
-            onClick={sendMessage}
-            className="bg-[#473472] text-white px-4 py-2 rounded-md hover:bg-[#36285a]"
-          >
-            Send
-          </button>
-        </div>
+{/* Chatbot Modal */}
+{chatOpen && (
+  <div
+    className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+  >
+    <motion.div
+      initial={{ opacity: 0, scale: 0.75 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.25 }}
+      className="bg-white w-[420px] h-[540px] rounded-2xl shadow-2xl p-5 flex flex-col"
+    >
+      {/* Header */}
+      <div className="flex justify-between items-center pb-3 border-b">
+        <h2 className="text-xl font-semibold text-[#473472]">
+          AI Proposal Assistant
+        </h2>
+        <X
+          size={24}
+          className="cursor-pointer text-gray-600 hover:text-black"
+          onClick={() => setChatOpen(false)}
+        />
       </div>
+
+      {/* Messages */}
+      <div className="flex-1 mt-3 overflow-y-auto space-y-3 px-1">
+        {messages.map((msg, index) => (
+          <div
+            key={index}
+            className={`p-3 rounded-lg max-w-[85%] text-sm ${
+              msg.sender === "user"
+                ? "bg-[#473472] text-white ml-auto"
+                : "bg-gray-200 text-gray-800"
+            }`}
+          >
+            {msg.text}
+          </div>
+        ))}
+
+        {/* Typing Indicator */}
+        {typing && (
+          <div className="bg-gray-300 text-gray-700 px-3 py-2 w-fit rounded-lg animate-pulse">
+            Typing…
+          </div>
+        )}
+      </div>
+
+      {/* Input Row */}
+      <div className="mt-4 flex gap-2">
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          className="flex-1 border rounded-lg px-3 py-2 outline-none"
+          placeholder="Ask something…"
+        />
+        <button
+          onClick={sendMessage}
+          className="bg-[#473472] text-white px-4 py-2 rounded-lg hover:bg-[#3a2c69] transition"
+        >
+          Send
+        </button>
+      </div>
+    </motion.div>
+  </div>
+)}
+
+
     </>
   );
 };
