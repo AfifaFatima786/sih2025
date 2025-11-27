@@ -550,9 +550,356 @@
 
 // export default EvaluationReport;
 
+// import React, { useEffect, useState } from "react";
+// import { ArrowLeft, FileText, MessageCircle, X } from "lucide-react";
+// import { Link, useParams } from "react-router-dom";
+
+
+// const EvaluationReport = () => {
+//   const { id } = useParams();
+//   const [report, setReport] = useState(null);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
+
+//   /* Chatbot States */
+//   const [chatOpen, setChatOpen] = useState(false);
+//   const [messages, setMessages] = useState([]);
+//   const [input, setInput] = useState("");
+//   const [isTyping, setIsTyping] = useState(false);
+
+
+//   const sendMessage = async () => {
+//   if (!input.trim()) return;
+
+//   // Add user message instantly
+//   const userMsg = { sender: "user", text: input };
+//   setMessages((prev) => [...prev, userMsg]);
+
+//   const question = input;
+//   setInput("");
+
+//   // Show typing indicator
+//   setIsTyping(true);
+
+//   // Simulate backend delay
+//   setTimeout(() => {
+//     const botReply = "This is a placeholder chatbot response. Connect API.";
+
+//     // Remove typing & add bot reply
+//     setIsTyping(false);
+
+//     setMessages((prev) => [
+//       ...prev,
+//       { sender: "bot", text: botReply },
+//     ]);
+//   }, 1200);
+// };
+
+
+
+//   useEffect(() => {
+//     const fetchReport = async () => {
+//       try {
+//         const res = await fetch(
+//           `${import.meta.env.VITE_BASE_URL}/api/proposal/report/${id}`,
+//           {
+//             method: "GET",
+//             credentials: "include",
+//           }
+//         );
+
+//         if (!res.ok) throw new Error("Failed to load report");
+
+//         const data = await res.json();
+//         setReport(data);
+//         setLoading(false);
+//       } catch (err) {
+//         setError(err.message);
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchReport();
+//   }, [id]);
+
+//   if (loading) {
+//     return (
+//       <div className="min-h-screen flex justify-center items-center text-[#473472] text-xl">
+//         Loading Report...
+//       </div>
+//     );
+//   }
+
+//   if (error) {
+//     return (
+//       <div className="min-h-screen flex justify-center items-center text-red-600 text-xl">
+//         {error}
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <>
+//       <div className="min-h-screen bg-[#EEEEEE] text-[#473472] py-10 px-6 font-sans">
+//         {/* Header */}
+//         <div className="max-w-5xl mx-auto mb-10">
+//           <Link to="/proposalsreview">
+//             <button
+//               className="cursor-pointer flex items-center gap-2 text-[#473472]
+//                        transition-all duration-300 hover:scale-[1.15]
+//                        border hover:shadow-lg hover:border-[#473472]
+//                        rounded-md px-2 py-1"
+//             >
+//               <ArrowLeft size={20} /> Back
+//             </button>
+//           </Link>
+
+//           <h1 className="text-4xl font-bold mt-4">Project Evaluation Report</h1>
+//           <p className="text-gray-600 mt-1">
+//             Automatically generated report for:
+//             <span className="font-semibold text-[#473472]"> {report.proposalName}</span>
+//           </p>
+//         </div>
+
+//         {/* Report Container */}
+//         <div className="max-w-5xl mx-auto space-y-8">
+//           {/* Project Overview */}
+//           <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-xl">
+//             <h2 className="text-2xl font-bold border-b pb-2 mb-4 text-[#473472]">
+//               Project Overview
+//             </h2>
+
+//             <p className="text-gray-600 leading-relaxed">
+//               Institution: <span className="font-semibold">{report.institutionName}</span>
+//             </p>
+
+//             <p className="text-gray-600 mt-2">
+//               Status:
+//               <span className="font-semibold text-[#53629E]"> {report.status}</span>
+//             </p>
+
+//             <p className="text-gray-600 mt-2">
+//               Submitted On:{" "}
+//               <span className="font-semibold">
+//                 {new Date(report.creationDate).toLocaleString()}
+//               </span>
+//             </p>
+//           </div>
+
+//           {/* Final Evaluation */}
+//           <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-xl">
+//             <h2 className="text-2xl font-bold border-b pb-2 mb-4 text-[#473472]">
+//               Final Evaluation Result
+//             </h2>
+
+//             <div className="flex items-end gap-6">
+//               <div className="text-6xl font-extrabold text-[#36934D]">
+//                 {report.overallScore}
+//               </div>
+//               <p className="text-gray-700">
+//                 Overall Rating:
+//                 <span className="text-[#473472] font-semibold">
+//                   {" "}
+//                   {report.overallScore >= 25
+//                     ? "Excellent"
+//                     : report.overallScore >= 20
+//                     ? "Strongly Viable"
+//                     : "Needs Improvement"}
+//                 </span>
+//               </p>
+//             </div>
+//           </div>
+
+//           {/* Metric Breakdown */}
+//           <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-xl">
+//             <h2 className="text-2xl font-bold text-[#473472] mb-4 border-b pb-2">
+//               Metric Breakdown
+//             </h2>
+
+//             <MetricRow title="Novelty Score" value={report.novelScore} color="#53629E" />
+//             <MetricRow title="Budget Score" value={report.budgetScore} color="#36934D" />
+//             <MetricRow title="Guideline Score" value={report.guidelineScore} color="#A67E00" />
+//           </div>
+
+//           {/* Recommendations */}
+//           <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-xl">
+//             <h2 className="text-2xl font-bold border-b pb-2 mb-4 text-[#473472]">
+//               Detailed Reviewer Notes
+//             </h2>
+
+//             <ul className="list-disc pl-5 text-gray-700 space-y-3">
+//               <li><strong>Novelty:</strong> {report.novelReport}</li>
+//               <li><strong>Budget:</strong> {report.budgetReport}</li>
+//               <li><strong>Guidelines:</strong> {report.guidelineReport}</li>
+//             </ul>
+//           </div>
+
+//           {/* Action Buttons */}
+//           <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-xl">
+//             <div className="flex flex-col sm:flex-row gap-4 pt-2">
+//               <button
+//                 className="flex-1 px-6 py-3 rounded-lg font-semibold text-lg 
+//               bg-gradient-to-r from-[#53629E] to-[#473472] 
+//               text-white shadow-md hover:scale-105 transition-all
+//               flex items-center justify-center gap-2"
+//               >
+//                 <FileText size={20} />
+//                 Download Full Report (PDF)
+//               </button>
+
+//               <button
+//                 className="flex-1 px-6 py-3 rounded-lg font-semibold text-lg 
+//               bg-gray-100 border border-gray-300 text-[#473472]
+//               hover:bg-gray-200 transition-all"
+//               >
+//                 View Similar Benchmarks
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* ──────────────────────── */}
+//       {/* Floating Chatbot Button */}
+//       {/* ──────────────────────── */}
+//       <button
+//         onClick={() => setChatOpen(true)}
+//         className="fixed bottom-6 right-6 bg-[#473472] text-white p-4 rounded-full shadow-lg hover:scale-110 transition-all"
+//       >
+//         <MessageCircle size={26} />
+//       </button>
+
+//       {/* ──────────────────────── */}
+//       {/* Chat Panel (Slide-in)   */}
+//       {/* ──────────────────────── */}
+//       <div
+//         className={`fixed top-0 right-0 h-full w-80 bg-white shadow-2xl border-l 
+//         transform transition-transform duration-300
+//         ${chatOpen ? "translate-x-0" : "translate-x-full"}`}
+//       >
+//         {/* Chat Header */}
+//         <div className="flex items-center justify-between bg-[#473472] text-white p-4">
+//           <h2 className="text-lg font-semibold">AI Proposal Assistant</h2>
+//           <X
+//             size={22}
+//             className="cursor-pointer hover:scale-110"
+//             onClick={() => setChatOpen(false)}
+//           />
+//         </div>
+
+//         {/* Messages */}
+//         <div className="p-4 overflow-y-auto h-[75%] space-y-3">
+//           {/* {messages.map((msg, index) => (
+//             <div
+//               key={index}
+//               className={`p-3 rounded-lg max-w-[90%] ${
+//                 msg.sender === "user"
+//                   ? "bg-[#473472] text-white ml-auto"
+//                   : "bg-gray-200 text-gray-800"
+//               }`}
+//             >
+//               {msg.text}
+//             </div>
+
+            
+//           ))} */}
+//            {/* Render each message */}
+//   {messages.map((msg, index) => (
+//     <div
+//       key={index}
+//       className={`p-3 rounded-lg max-w-[90%] animate-fade ${
+//         msg.sender === "user"
+//           ? "bg-[#473472] text-white ml-auto"
+//           : "bg-gray-200 text-gray-800"
+//       }`}
+//     >
+//       {msg.text}
+//     </div>
+//   ))}
+
+
+//           {/* ✅ TYPING INDICATOR GOES HERE */}
+//   {isTyping && (
+//     <div className="p-3 bg-gray-200 text-gray-800 rounded-lg max-w-[60%] flex gap-2 items-center animate-pulse">
+//       <span className="inline-block w-2 h-2 bg-gray-500 rounded-full"></span>
+//       <span className="inline-block w-2 h-2 bg-gray-500 rounded-full"></span>
+//       <span className="inline-block w-2 h-2 bg-gray-500 rounded-full"></span>
+//     </div>
+//   )}
+//         </div>
+
+//         {/* Input Box */}
+//         <div className="p-3 border-t flex items-center gap-2">
+//           <input
+//             value={input}
+//             onChange={(e) => setInput(e.target.value)}
+//             placeholder="Ask something..."
+//             className="flex-1 border rounded-md px-3 py-2 outline-none"
+//           />
+//           <button
+//             onClick={sendMessage}
+//             className="bg-[#473472] text-white px-4 py-2 rounded-md hover:bg-[#36285a]"
+//           >
+//             Send
+//           </button>
+//         </div>
+//       </div>
+//     </>
+//   );
+// };
+
+// /* ------------------------------------------- */
+// /* Metric Component (Re-usable Clean UI)       */
+// /* ------------------------------------------- */
+// const MetricRow = ({ title, value, color }) => {
+//   const pct = Math.min((value / 30) * 100, 100);
+
+//   return (
+//     <div className="pb-4 border-b border-gray-200 last:border-b-0">
+//       <div className="flex items-center justify-between mb-1">
+//         <span className="text-gray-600">{title}</span>
+//         <span className="text-xl font-bold" style={{ color }}>
+//           {value}
+//         </span>
+//       </div>
+
+//       <div className="w-full bg-gray-200 rounded-full h-2">
+//         <div
+//           className="h-2 rounded-full"
+//           style={{ width: `${pct}%`, backgroundColor: color }}
+//         ></div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default EvaluationReport;
+
 import React, { useEffect, useState } from "react";
 import { ArrowLeft, FileText, MessageCircle, X } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
+
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+
+const downloadPDF = async () => {
+  const reportElement = document.getElementById("report-container");
+
+  if (!reportElement) return;
+
+  const canvas = await html2canvas(reportElement, { scale: 2 });
+  const imgData = canvas.toDataURL("image/png");
+
+  const pdf = new jsPDF("p", "mm", "a4");
+  const imgProps = pdf.getImageProperties(imgData);
+
+  const pdfWidth = pdf.internal.pageSize.getWidth();
+  const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+  pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+  pdf.save(`Evaluation_Report_${report.proposalName}.pdf`);
+};
+
 
 
 const EvaluationReport = () => {
@@ -662,7 +1009,7 @@ const EvaluationReport = () => {
         </div>
 
         {/* Report Container */}
-        <div className="max-w-5xl mx-auto space-y-8">
+        <div id="report-container" className="max-w-5xl mx-auto space-y-8">
           {/* Project Overview */}
           <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-xl">
             <h2 className="text-2xl font-bold border-b pb-2 mb-4 text-[#473472]">
@@ -742,6 +1089,7 @@ const EvaluationReport = () => {
               bg-gradient-to-r from-[#53629E] to-[#473472] 
               text-white shadow-md hover:scale-105 transition-all
               flex items-center justify-center gap-2"
+              onClick={downloadPDF}
               >
                 <FileText size={20} />
                 Download Full Report (PDF)
