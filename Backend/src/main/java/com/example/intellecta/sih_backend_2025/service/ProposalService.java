@@ -43,7 +43,7 @@ public class ProposalService {
         proposal.setProposalName(request.getProposalName());
         proposal.setFilePath(request.getFilePath());
         proposal.setInstitutionName(request.getInstitutionName());
-        proposal.setStatus(Status.PENDING);
+        proposal.setStatus(Status.SUCCESS);
 
         proposalRepository.save(proposal);
 
